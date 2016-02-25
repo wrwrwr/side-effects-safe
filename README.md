@@ -116,6 +116,10 @@ pure(ex);  // false
 pure(ex, {pureCallees: /^f$/});  // true
 ```
 
+Regexes are matched against a string with dots, irrespective of the property
+style used in code (for example `a[3].b['c']` is normalized to `a.3.b.c` and
+`a[b]` never matches).
+
 ##### Example
 
 Here's a sketch of a transform to remove no-op expression statements:
