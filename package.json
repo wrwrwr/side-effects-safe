@@ -1,0 +1,34 @@
+{
+    "name": "side-effects-safe",
+    "version": "0.0.1",
+    "description": "If an expression's value is unused, can it be dropped?",
+    "author": "Wojtek Ruszczewski <side-effects-safe@wr.waw.pl>",
+    "keywords": ["optimization", "minification", "babel", "uglify"],
+    "scripts": {
+        "build": "webpack --env=p",
+        "test": "eslint . --ext=js --ext=jsx && mocha --opts tests/mocha.opts",
+        "prepublish": "npm run build && npm test"
+    },
+    "main": "dist/main.es5.js",
+    "main:es5": "dist/main.es5.js",
+    "main:es6": "dist/main.es6.js",
+    "main:es7": "main.jsx",
+    "dependencies": {
+        "escape-string-regexp": "^1.0.5"
+    },
+    "webpack": {
+        "library": "SideEffectsSafe",
+        "target": "node",
+        "externals": {
+            "escape-string-regexp": "commonjs escape-string-regexp"
+        }
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/wrwrwr/side-effects-safe"
+    },
+    "bugs": {
+        "url": "https://github.com/wrwrwr/side-effects-safe/issues"
+    },
+    "license": "MIT"
+}
