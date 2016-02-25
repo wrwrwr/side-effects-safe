@@ -2,16 +2,17 @@ side-effects-safe
 =================
 
 Provides lists of side-effects free functions and a helper to check if an
-abstract-syntax-tree expression node can be dropped if its value is not used.
+abstract syntax tree expression node can be dropped if its value is not used.
 
-Deciding if a piece of code changes program state is not trivial in general
-&ndash; [Rice's theorem][] suggests it is undecidable. However, side-effects
-safety (with false negatives) may suffice for optimization purposes.
+Statically deciding if a piece of code changes program state is not trivial
+&ndash; [Rice's theorem][] suggests that the problem is in general undecidable.
+However, side-effects safety (with false negatives) may suffice for
+optimization purposes.
 
 <!--
     Consider (possibly with f() limited to some subset of the language):
 
-        f(a) === 0 ? i++ : 1
+        f(a) === 0 ? i++ : null
 
     If the function returns 0 for some argument, the expression is not 
     side-effects free, otherwise it is. Now, returning 0 for some argument
@@ -28,7 +29,7 @@ Three lists of functions are provided:
 * `pureFuncs`
 
     Calls to functions from this list should be safe to drop if the return
-    value is not used (unless you use some nasty overriding).
+    value is not used (unless you do some nasty overriding).
 
 * `pureFuncsWithUnusualException`
 
@@ -67,6 +68,7 @@ The same within a `webpack.config.js`:
 
 ```javascript
 const pureFuncs = require('side-effects-safe').pureFuncs;
+const webpack = require('webpack');
 
 module.exports = {
     ...
@@ -133,7 +135,7 @@ export default () => ({
 ```
 
 This is implemented in [babel-remove-pure-exps][]. Take a look at
-[babel-remove-props][] for another example.
+[babel-remove-props][] for another usage example.
 
 [babel]: https://babeljs.io/
 [babel-remove-pure-exps]: https://github.com/wrwrwr/babel-remove-pure-exps
