@@ -91,23 +91,26 @@ babelDirs.push(projectDir);
 let babelPlugins = [
     'transform-decorators-legacy'
 ];
-// Transforms to run on output chunks and only in production (with --env=p).
+// Transforms to run on output chunks in production (with --env=p).
 let babelOutputPlugins = babelPlugins.concat([
-    'transform-react-constant-elements',
-    'transform-react-inline-elements',
-    'transform-member-expression-literals',
-    'transform-merge-sibling-variables',
-    'transform-minify-booleans',
-    'transform-property-literals',
+    // Removals.
     web && !library ? 'transform-remove-console' : 'transform-nothing',
     'transform-remove-debugger',
-    // 'transform-simplify-comparison-operators',
+    removablePropsRegex
+            ? ['transform-remove-props', {regex: removablePropsRegex,
+                                          pureMembers: pureMembersRegex,
+                                          pureCallees: pureCalleesRegex}]
+            : 'transform-nothing',
     ['transform-remove-pure-exps', {pureMembers: pureMembersRegex,
-                                    pureCallees: pureCalleesRegex
-    }],
-    ['transform-remove-props', {regex: removablePropsRegex,
-                                pureMembers: pureMembersRegex,
-                                pureCallees: pureCalleesRegex}]
+                                    pureCallees: pureCalleesRegex}],
+    // Optimization.
+    'transform-react-constant-elements',
+    'transform-react-inline-elements',
+    // Minification.
+    'transform-member-expression-literals',
+    'transform-property-literals',
+    'transform-merge-sibling-variables',
+    'transform-minify-booleans'
 ]);
 
 // What should Babel transpile to? (Just ES5 is supported at the moment :-)
